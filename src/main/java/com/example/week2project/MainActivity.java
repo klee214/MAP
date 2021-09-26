@@ -11,8 +11,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.week2project.Calculator;
+
 public class MainActivity extends AppCompatActivity {
     public static final String tag = "Week2";
+
+    Calculator cal = new Calculator();
 
     TextView result;
     TextView advance_result;
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             result.setText(result_display);
 
             params.add(text);
-        } else if (params.size() > 0 && !isNum(params.get(params.size() - 1))) {
+        } else if (params.size() > 0 && ! cal.isNum(params.get(params.size() - 1))) {
             params.set(params.size() - 1, text);
         } else {
             params.add(text);
@@ -127,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 1; i + 2 < params.size(); i = i + 2) {
 
             if (i == 1) {
-                tmp_result = operator(Float.parseFloat(params.get(i - 1)), Float.parseFloat(params.get(i + 1)), params.get(i));
+                tmp_result = cal.operator(Float.parseFloat(params.get(i - 1)), Float.parseFloat(params.get(i + 1)), params.get(i));
             } else {
-                tmp_result = operator(tmp_result, Float.parseFloat(params.get(i + 1)), params.get(i));
+                tmp_result = cal.operator(tmp_result, Float.parseFloat(params.get(i + 1)), params.get(i));
             }
         }
         result_display += String.valueOf(tmp_result);
@@ -139,32 +143,6 @@ public class MainActivity extends AppCompatActivity {
         params.clear();
         result_display = "";
     }
-
-    public float operator(float a, float b, String op) {
-        if (op.equals("+")) {
-            return a + b;
-        }
-        if (op.equals("-")) {
-            return a - b;
-        }
-        if (op.equals("/")) {
-            return a / b;
-        }
-        if (op.equals("*")) {
-            return a * b;
-        }
-        return 0;
-    }
-
-    public boolean isNum(String s) {
-        try {
-            float f = Float.parseFloat(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
 
     @Override
     protected void onResume() {
